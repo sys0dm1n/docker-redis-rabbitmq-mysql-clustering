@@ -1,0 +1,56 @@
+version: '2'
+
+services:
+  stats:
+    image: {{ rabbitmq_image }}
+    restart: always
+    environment:
+      - RABBITMQ_NODE_TYPE=stats
+      - RABBITMQ_NODE_NAME=rabbit@stats
+      - RABBITMQ_ERL_COOKIE={{ rabbitmq_erl_cookie }}
+      - RABBITMQ_USERNAME={{ rabbitmq_username }}
+      - RABBITMQ_PASSWORD={{ rabbitmq_password }}
+    ports:
+      - '15672:15672'
+{% if rabbitmq_persistence_enabled %}
+    volumes:
+      - 'rabbitmqstats_data:/bitnami'
+{% endif %}
+  queue-disc1:
+    image: {{ rabbitmq_image }}
+    restart: always
+    environment:
+      - RABBITMQ_NODE_TYPE=queue-disc
+      - RABBITMQ_NODE_NAME=rabbit@queue-disc1
+      - RABBITMQ_CLUSTER_NODE_NAME=rabbit@stats
+      - RABBITMQ_ERL_COOKIE={{ rabbitmq_erl_cookie }}
+      - RABBITMQ_USERNAME={{ rabbitmq_username }}
+      - RABBITMQ_PASSWORD={{ rabbitmq_password }}
+{% if rabbitmq_persistence_enabled %}
+    volumes:
+      - 'rabbitmqdisc1_data:/bitnami'
+{% endif %}
+  queue-ram1:
+    image: {{ rabbitmq_image }}
+    restart: always
+    environment:
+      - RABBITMQ_NODE_TYPE=queue-ram
+      - RABBITMQ_NODE_NAME=rabbit@queue-ram1
+      - RABBITMQ_CLUSTER_NODE_NAME=rabbit@stats
+      - RABBITMQ_ERL_COOKIE={{ rabbitmq_erl_cookie }}
+      - RABBITMQ_USERNAME={{ rabbitmq_username }}
+      - RABBITMQ_PASSWORD={{ rabbitmq_password }}
+{% if rabbitmq_persistence_enabled %}
+    volumes:
+      - 'rabbitmqram1_data:/bitnami'
+{% endif %}
+
+{% if rabbitmq_persistence_enabled %}
+volumes:
+  rabbitmqstats_data:
+    driver: local
+  rabbitmqdisc1_data:
+    driver: local
+  rabbitmqram1_data:
+    driver: local
+{% endif %}

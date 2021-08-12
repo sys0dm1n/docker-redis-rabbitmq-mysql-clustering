@@ -1,0 +1,17 @@
+---
+
+- name: MySQL | Create compose directory
+  file:
+    path: "./mysql"
+    state: directory
+    recurse: yes
+
+- name: MySQL | Copy MySQL docker compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "./mysql/docker-compose.yml"
+
+- name: MySQL | Run mysql cluster
+  docker_compose:
+    project_name: mysql
+    project_src: "./mysql"

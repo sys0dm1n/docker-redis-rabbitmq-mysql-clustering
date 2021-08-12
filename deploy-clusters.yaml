@@ -1,0 +1,21 @@
+---
+
+- name: Deploy locally
+  hosts: all
+  roles:
+     - role: redis_cluster_docker
+       become: false
+     - role: rabbitmq_cluster_docker
+       become: false
+       vars:
+        rabbitmq_username: "test"
+        rabbitmq_password: "test"
+     - role: mysql_cluster_docker
+       become: false
+       vars:
+        mysql_replication_user: "repl_user"
+        mysql_replication_password: "repl_password"
+        mysql_user: "test"
+        mysql_password: "test"
+        mysql_database: "test"
+        mysql_root_password: "master_password"

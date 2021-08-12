@@ -1,0 +1,6 @@
+---
+
+redis_image: "docker.io/bitnami/redis-cluster:6.2"
+redis_persistence_enabled: true
+redis_data_path: "/bitnami/redis/data"
+redis_password: "bitnami"

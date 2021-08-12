@@ -1,0 +1,88 @@
+version: '2'
+services:
+  redis-node-0:
+    image: {{ redis_image }}
+{% if redis_persistence_enabled %}
+    volumes:
+      - redis-cluster_data-0:{{ redis_data_path }}
+{% endif %}
+    environment:
+      - 'REDIS_PASSWORD={{ redis_password }}'
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
+
+  redis-node-1:
+    image: {{ redis_image }}
+{% if redis_persistence_enabled %}
+    volumes:
+      - redis-cluster_data-1:{{ redis_data_path }}
+{% endif %}
+    environment:
+      - 'REDIS_PASSWORD={{ redis_password }}'
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
+
+  redis-node-2:
+    image: {{ redis_image }}
+{% if redis_persistence_enabled %}
+    volumes:
+      - redis-cluster_data-2:{{ redis_data_path }}
+{% endif %}
+    environment:
+      - 'REDIS_PASSWORD={{ redis_password }}'
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
+
+  redis-node-3:
+    image: {{ redis_image }}
+{% if redis_persistence_enabled %}
+    volumes:
+      - redis-cluster_data-3:{{ redis_data_path }}
+{% endif %}
+    environment:
+      - 'REDIS_PASSWORD={{ redis_password }}'
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
+
+  redis-node-4:
+    image: {{ redis_image }}
+{% if redis_persistence_enabled %}
+    volumes:
+      - redis-cluster_data-4:{{ redis_data_path }}
+{% endif %}
+    environment:
+      - 'REDIS_PASSWORD={{ redis_password }}'
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
+
+  redis-node-5:
+    image: {{ redis_image }}
+{% if redis_persistence_enabled %}
+    volumes:
+      - redis-cluster_data-5:{{ redis_data_path }}
+{% endif %}
+    depends_on:
+      - redis-node-0
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+    environment:
+      - 'REDIS_PASSWORD={{ redis_password }}'
+      - 'REDISCLI_AUTH={{ redis_password }}'
+      - 'REDIS_CLUSTER_REPLICAS=1'
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
+      - 'REDIS_CLUSTER_CREATOR=yes'
+    ports:
+      - '6379:6379'
+
+{% if redis_persistence_enabled %}
+volumes:
+  redis-cluster_data-0:
+    driver: local
+  redis-cluster_data-1:
+    driver: local
+  redis-cluster_data-2:
+    driver: local
+  redis-cluster_data-3:
+    driver: local
+  redis-cluster_data-4:
+    driver: local
+  redis-cluster_data-5:
+    driver: local
+{% endif %}

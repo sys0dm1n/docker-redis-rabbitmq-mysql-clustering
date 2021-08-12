@@ -1,0 +1,7 @@
+---
+
+rabbitmq_image: "bitnami/rabbitmq"
+rabbitmq_username: "bitnami"
+rabbitmq_password: "bitnami"
+rabbitmq_persistence_enabled: false
+rabbitmq_erl_cookie: "s3cr3tc00ki3"

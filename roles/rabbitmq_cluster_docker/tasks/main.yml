@@ -1,0 +1,17 @@
+---
+
+- name: RabbitMQ | Create compose directory
+  file:
+    path: "./rabbitmq"
+    state: directory
+    recurse: yes
+
+- name: RabbitMQ | Copy rabbitmq docker compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "./rabbitmq/docker-compose.yml"
+
+- name: RabbitMQ | Run rabbitmq container
+  docker_compose:
+    project_name: rabbitmq
+    project_src: "./rabbitmq"

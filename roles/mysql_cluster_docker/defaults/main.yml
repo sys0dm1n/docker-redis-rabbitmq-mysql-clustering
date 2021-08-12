@@ -1,0 +1,10 @@
+---
+
+mysql_image: "bitnami/mysql:latest"
+mysql_persistence_enabled: true
+mysql_replication_user: "repl_user"
+mysql_replication_password: "repl_password"
+mysql_user: "test"
+mysql_password: "test"
+mysql_database: "test"
+mysql_root_password: "master_password"

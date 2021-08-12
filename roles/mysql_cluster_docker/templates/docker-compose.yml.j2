@@ -1,0 +1,44 @@
+version: '2'
+
+services:
+  mysql-master:
+    image: {{ mysql_image }}
+    ports:
+      - '3306:3306'
+{% if mysql_persistence_enabled %}
+    volumes:
+      - 'mysql_master1_data:/bitnami/mysql/data'
+{% endif %}
+    environment:
+      - MYSQL_REPLICATION_MODE=master
+      - MYSQL_REPLICATION_USER={{ mysql_replication_user }}
+      - MYSQL_REPLICATION_PASSWORD={{ mysql_replication_password }}
+      - MYSQL_ROOT_PASSWORD={{ mysql_root_password }}
+      - MYSQL_USER={{ mysql_user }}
+      - MYSQL_PASSWORD={{ mysql_password }}
+      - MYSQL_DATABASE={{ mysql_database }}
+  mysql-slave:
+    image: {{ mysql_image }}
+    ports:
+      - '3307:3306'
+    depends_on:
+      - mysql-master
+    environment:
+      - MYSQL_REPLICATION_MODE=slave
+      - MYSQL_REPLICATION_USER={{ mysql_replication_user }}
+      - MYSQL_REPLICATION_PASSWORD={{ mysql_replication_password }}
+      - MYSQL_MASTER_HOST=mysql-master
+      - MYSQL_MASTER_PORT_NUMBER=3306
+      - MYSQL_MASTER_ROOT_PASSWORD={{ mysql_root_password }}
+{% if mysql_persistence_enabled %}
+    volumes:
+      - 'mysql_slave1_data:/bitnami/mysql/data'
+{% endif %}
+
+{% if mysql_persistence_enabled %}
+volumes:
+  mysql_master1_data:
+    driver: local
+  mysql_slave1_data:
+    driver: local
+{% endif %}

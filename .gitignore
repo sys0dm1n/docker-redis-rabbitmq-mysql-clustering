@@ -1,0 +1,5 @@
+# Local folders
+redis/
+rabbitmq/
+mysql/
+.vagrant/

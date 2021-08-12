@@ -1,0 +1,17 @@
+---
+
+- name: Redis | Create compose directory
+  file:
+    path: "./redis"
+    state: directory
+    recurse: yes
+
+- name: Redis | Copy redis docker compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "./redis/docker-compose.yml"
+
+- name: Redis | Run redis container
+  docker_compose:
+    project_name: redis
+    project_src: "./redis"
